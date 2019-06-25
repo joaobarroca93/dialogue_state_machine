@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import dialogue_state_machine_ros.dialogue_state_machine_node
+
+if __name__ == '__main__':
+ dialogue_state_machine_ros.dialogue_state_machine_node.main()
