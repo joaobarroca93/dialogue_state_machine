@@ -137,9 +137,8 @@ class SpeechRecognitionWaitingState(State):
     def execute(self, userdata):
 
         rospy.loginfo('Executing SpeechRecognitionWaiting State')
-        
-        #return 'success'
 
+        # need to add counter to simulate timeout
         while not self.received_msg and not rospy.is_shutdown():
             rospy.sleep(0.1)
 
@@ -167,7 +166,9 @@ class DialogueManagementState(State):
 
     def execute(self,userdata):
         rospy.loginfo('Executing DialogueManagement State')
-        return 'finish'
+        rospy.sleep(10)
+        # only continues after seeing a system response topic update
+        return 'continue'
 
 class DialogueContinueState(State):
 
