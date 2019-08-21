@@ -111,8 +111,8 @@ class SpeechRecognitionState(State):
         rospy.loginfo('Executing SpeechRecognition State')
         rospy.sleep(0.1)
 
-        # starts recognition listenning for 5 seconds
-        self.publisher.publish(Int32(data=5))
+        # starts recognition listenning for 7 seconds
+        self.publisher.publish(Int32(data=7))
 
         return 'continue'
 
