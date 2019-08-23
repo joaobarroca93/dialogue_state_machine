@@ -186,7 +186,8 @@ class DialogueManagementState(State):
 
         # only continues after seeing a system response topic update
         if self.dialogue_status == 'finish' or self.dialogue_status == 'end':
-            return 'finish'
+            return 'continue'
+            #return 'finish'
             
         return 'continue'
 
