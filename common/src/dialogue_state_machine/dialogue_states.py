@@ -164,10 +164,30 @@ class DialogueManagementState(State):
     def __init__(self):
         State.__init__(self, outcomes=['continue', 'finish'])
 
+        self.dialogue_status = None
+        self.received_msg = False
+
+        self.subsriber = rospy.Subscriber(
+            '/dialogue_status', String, self.callback
+        )
+
+    def callback(self, msg):
+        self.received_msg = True
+        self.dialogue_status = msg.data
+
     def execute(self,userdata):
         rospy.loginfo('Executing DialogueManagement State')
-        rospy.sleep(10)
+
+        # need to add counter to simulate timeout
+        while not self.received_msg and not rospy.is_shutdown():
+            rospy.sleep(0.1)
+
+        self.received_msg = False
+
         # only continues after seeing a system response topic update
+        if self.dialogue_status == 'finish' or self.dialogue_status == 'end':
+            return 'finish'
+            
         return 'continue'
 
 class DialogueContinueState(State):
