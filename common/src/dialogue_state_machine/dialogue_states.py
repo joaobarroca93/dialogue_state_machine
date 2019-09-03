@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import copy
+import time
 
 import rospy
 import smach
@@ -11,6 +12,8 @@ import threading
 from smach import State, StateMachine
 
 from std_msgs.msg import Int32, String
+
+from mbot_robot_class_ros import mbot as mbot_class
 
 
 class DialogueSubStateMachine(smach.StateMachine):
@@ -89,9 +92,27 @@ class DialogueBeginState(State):
     def __init__(self):
         State.__init__(self, outcomes=['success', 'failure'])
 
+        self.mbot = mbot_class.mbotRobot(enabled_components=["hri", "navigation"])
+
+        self.dialogue_status = None
+        self.received_msg = False
+
+        self.subsriber = rospy.Subscriber(
+            '/dialogue_status', String, self.callback
+        )
+
+    def callback(self, msg):
+        self.received_msg = True
+        self.dialogue_status = msg.data
+
     def execute(self, userdata):
-        #hri_states.Say("Something to start dialogue")
         rospy.loginfo('Executing DialogueBegin State')
+        # need to add counter to simulate timeout
+        #while not self.received_msg and not rospy.is_shutdown():
+            #rospy.sleep(0.1)
+        
+        #self.mbot.hri.say_and_wait("Finished checking tables.")
+
         return 'success'
 
 
@@ -156,6 +177,7 @@ class SpeechRecognitionFailureState(State):
 
     def execute(self, userdata):
         rospy.loginfo('Exeuting SpeechRecognitionFailure State')
+        time.sleep(0.5)
         return 'success'
         #hri_states.Say("Can you repeat what you said?")
 
@@ -180,7 +202,7 @@ class DialogueManagementState(State):
 
         # need to add counter to simulate timeout
         while not self.received_msg and not rospy.is_shutdown():
-            rospy.sleep(0.1)
+            rospy.sleep(2)
 
         self.received_msg = False
 
