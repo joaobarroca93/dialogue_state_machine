@@ -1,19 +1,6 @@
 <?xml version="1.0"?>
 <launch>
 
- <node pkg="google_speech_recognition" type="google_speech_recognition_node" name="ASR"
- respawn="true" output="screen" />
-
- <node pkg="mbot_nlu_pytorch" type="mbot_nlu_pytorch_node" name="NLU"
- respawn="true" output="screen" 
- args="$(find mbot_nlu_pytorch)/ros/config/config_mbot_nlu_pytorch.yaml"/>
- 
-<node pkg="mbot_dst_rule_based" type="mbot_dst_rule_based_node" name="DST"
- respawn="true" output="screen" />
-
- <node pkg="mbot_dialogue_management" type="mbot_dialogue_management_node" name="DM"
- respawn="true" output="screen" />
-
  <node pkg="dialogue_state_machine" type="dialogue_state_machine_node" name="DialogueStateMachine"
  respawn="true" output="screen" />
 
